@@ -2,7 +2,7 @@ call plug#begin()
 Plug 'ecomba/vim-ruby-refactoring'
 Plug 'scrooloose/nerdtree'
 Plug 'chriskempson/base16-vim'
-Plug 'roman/golden-ratio'
+"Plug 'roman/golden-ratio'
 Plug 'w0rp/ale'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -14,20 +14,25 @@ Plug 'airblade/vim-gitgutter'
 Plug 'Chiel92/vim-autoformat'
 Plug 'kien/ctrlp.vim'
 Plug 'mhinz/vim-startify'
-Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
+"Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
 Plug 'gcmt/taboo.vim'
 Plug 'lifepillar/vim-mucomplete'
 Plug 'tmhedberg/matchit'
 Plug 'Townk/vim-autoclose'
-Plug 'alvan/vim-closetag'
-Plug 'othree/html5.vim'
+"Plug 'alvan/vim-closetag'
+"Plug 'othree/html5.vim'
 "Plug 'posva/vim-vue'
 Plug 'vim-scripts/The-Nerd-Commenter'
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'tpope/vim-rails'
 Plug 'vim-ruby/vim-ruby'
-Plug 'elixir-editors/vim-elixir'
-Plug 'slashmili/alchemist.vim'
+"Plug 'elixir-editors/vim-elixir'
+"Plug 'slashmili/alchemist.vim'
+Plug 'tpope/vim-fugitive'
+"Plug 'qpkorr/vim-bufkill'
+Plug 'kchmck/vim-coffee-script'
+"Plug 'SirVer/ultisnips'
+Plug 'reinh/jquery-autocomplete'
 call plug#end()
 
 " Basic Configuration
@@ -80,8 +85,11 @@ set is
 " 	A list of file patterns.  A file that matches with one of these
 " 	patterns is ignored when expanding |wildcards|, completing file or
 " 	directory names
-set wildignore+=*/tmp/*,*.so,*.swp,*.pdf,*.zip,*/node_modules/*,*.css
+set wildignore+=*/tmp/*,*.so,*.swp,*.pdf,*.zip,*/node_modules/*,*/bower_components/*,*/cassettes/*
 let g:jsx_ext_required = 0
+
+" Ignore case on vim searches
+set ignorecase
 
 " make backspace work intuitively
 set backspace=indent,eol,start
@@ -106,17 +114,23 @@ let g:rubycomplete_rails = 1
 let g:rubycomplete_load_gemfile = 1
 
 " MuComplete Config
-inoremap <expr> <c-e> mucomplete#popup_exit("\<c-e>")
-inoremap <expr> <c-y> mucomplete#popup_exit("\<c-y>")
-inoremap <expr>  <cr> mucomplete#popup_exit("\<cr>")
-set completeopt=longest,menuone
-set completeopt+=noinsert
-let g:mucomplete#enable_auto_at_startup = 1
-let g:mucomplete#buffer_relative_paths = 1
-let g:mucomplete#chains = {
-    \ 'default' : ['omni', 'keyn', 'dict', 'uspl', 'ulti'],
-    \ 'vim'     : ['cmd', 'keyn']
- \ }
+"inoremap <expr> <c-e> mucomplete#popup_exit("\<c-e>")
+"inoremap <expr> <c-y> mucomplete#popup_exit("\<c-y>")
+"inoremap <expr>  <cr> mucomplete#popup_exit("\<cr>")
+"set completeopt=longest,menuone
+"set completeopt+=noinsert
+"let g:mucomplete#enable_auto_at_startup = 1
+"let g:mucomplete#buffer_relative_paths = 1
+" let g:mucomplete#can_complete = {}
+" let g:mucomplete#can_complete.default = {
+"     \  'omni': {
+"     \     t -> g:mucomplete_with_key
+"     \   }
+"     \ }
+"let g:mucomplete#chains = {
+"    \ 'default' : ['omni', 'keyn', 'dict', 'uspl', 'ulti'],
+"    \ 'vim'     : ['cmd', 'keyn']
+" \ }
 
 let g:ale_linters = {'ruby': 'rubocop'}
 let g:ale_linters = {'elixir': 'credo' }
@@ -165,6 +179,10 @@ set sessionoptions+=tabpages,globals
 let mapleader=" "
 map <leader>s :source ~/.vim/vimrc<CR>
 map <leader>S :e ~/.vim/vimrc<CR>
+map <leader>z :e ~/.zshrc<CR>
+
+" Space t runs rails minitest on current file
+map <leader>t :!rails test %<CR>
 
 " Double Space to open last closed file
 nnoremap <Leader><Leader> :e#<CR>
@@ -188,9 +206,9 @@ nnoremap <Leader>j :ALENext<CR>
 nnoremap <Leader>k :ALEPrevious<CR>
 
 " Custom commands
-command! Dark execute "colorscheme base16-gruvbox-dark-pale"
-command! Light execute "colorscheme base16-solarized-light"
-command! Mocha execute "colorscheme base16-mocha"
+command! Dark execute "colorscheme base16_eighties"
+command! Light execute "colorscheme base16_solarized-light"
+command! Mocha execute "colorscheme base16_mocha"
 
 " Find and Replace
 nnoremap <Leader>f :vimgrep /
