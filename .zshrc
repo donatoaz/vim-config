@@ -108,3 +108,8 @@ alias tree='colorls -A --tree'
 export PATH="$PATH:$HOME/.rvm/bin"
 
 function cpplugaapp(){ cp .pluga_app_script ../../pluga-api/app_scripts/$(basename $PWD) }
+
+# my git aliases
+alias glod='git log --oneline --decorate'
+
+eval "$(direnv hook zsh)"

@@ -33,6 +33,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'kchmck/vim-coffee-script'
 "Plug 'SirVer/ultisnips'
 Plug 'reinh/jquery-autocomplete'
+Plug 'junegunn/vim-emoji'
 call plug#end()
 
 " Basic Configuration
@@ -242,3 +243,5 @@ augroup MarkMargin
     autocmd  BufEnter  *       :call MarkMargin(1)
     autocmd  BufEnter  *.vp*   :call MarkMargin(0)
 augroup END
+
+set completefunc=emoji#complete
