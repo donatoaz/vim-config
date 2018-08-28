@@ -8,7 +8,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'pangloss/vim-javascript'
 "Plug 'jparise/vim-graphql'
-"Plug 'mxw/vim-jsx'
+Plug 'mxw/vim-jsx'
 Plug 'elzr/vim-json'
 Plug 'airblade/vim-gitgutter'
 Plug 'Chiel92/vim-autoformat'
@@ -19,8 +19,8 @@ Plug 'gcmt/taboo.vim'
 Plug 'lifepillar/vim-mucomplete'
 Plug 'tmhedberg/matchit'
 Plug 'Townk/vim-autoclose'
-"Plug 'alvan/vim-closetag'
-"Plug 'othree/html5.vim'
+Plug 'alvan/vim-closetag'
+Plug 'othree/html5.vim'
 "Plug 'posva/vim-vue'
 Plug 'vim-scripts/The-Nerd-Commenter'
 Plug 'dhruvasagar/vim-table-mode'
@@ -31,9 +31,16 @@ Plug 'vim-ruby/vim-ruby'
 Plug 'tpope/vim-fugitive'
 "Plug 'qpkorr/vim-bufkill'
 Plug 'kchmck/vim-coffee-script'
+" ES2015 code snippets (Optional)
+"Plug 'epilande/vim-es2015-snippets'
+" React code snippets
+"Plug 'epilande/vim-react-snippets'
 "Plug 'SirVer/ultisnips'
 Plug 'reinh/jquery-autocomplete'
 Plug 'junegunn/vim-emoji'
+Plug 'vim-scripts/loremipsum'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'tpope/vim-surround'
 call plug#end()
 
 " Basic Configuration
@@ -86,7 +93,7 @@ set is
 " 	A list of file patterns.  A file that matches with one of these
 " 	patterns is ignored when expanding |wildcards|, completing file or
 " 	directory names
-set wildignore+=*/tmp/*,*.so,*.swp,*.pdf,*.zip,*/node_modules/*,*/bower_components/*,*/cassettes/*
+set wildignore+=*/tmp/*,*.so,*.swp,*.pdf,*.zip,*/node_modules/*,*/bower_components/*,*/cassettes/*,*/dist/*
 let g:jsx_ext_required = 0
 
 " Ignore case on vim searches
@@ -97,6 +104,7 @@ set backspace=indent,eol,start
 
 " make y and yy go to clipboard
 set clipboard=unnamed
+" set clipboard=unnamedplus
 
 " macro to replace double quotes with single quotes
 "fix this: let @a=:%s/\"\([^"]*\)\"/'\1'/
@@ -156,8 +164,11 @@ let g:ale_fixers['graphql'] = ['prettier']
 let g:ale_fixers['html'] = ['prettier']
 let g:ale_fixers['vue'] = ['prettier']
 let g:ale_fix_on_save = 1
-let g:ale_javascript_prettier_options = '--trailing-comma --no-semi --no-bracket-spacing
-      \ --single-quote --jsx-bracket-same-line --print-width 120'
+" original
+" let g:ale_javascript_prettier_options = '--trailing-comma --no-semi --no-bracket-spacing
+" let g:ale_javascript_prettier_options = '--trailing-comma
+"      \ --single-quote --jsx-bracket-same-line --print-width 120'
+let g:ale_javascript_prettier_options = '--config ./prettier.config.js'
      
 " Theme options
 "set termguicolors
@@ -181,9 +192,13 @@ let mapleader=" "
 map <leader>s :source ~/.vim/vimrc<CR>
 map <leader>S :e ~/.vim/vimrc<CR>
 map <leader>z :e ~/.zshrc<CR>
+map <leader>t :e ~/.hyper.js<CR>
+
+" Indent json
+map <leader>json :%!python -m json.tool<CR>
 
 " Space t runs rails minitest on current file
-map <leader>t :!rails test %<CR>
+"map <leader>t :!rails test %<CR>
 
 " Double Space to open last closed file
 nnoremap <Leader><Leader> :e#<CR>
@@ -201,10 +216,14 @@ nnoremap <Leader>h :nohl<CR>
 " Use TAB to change Split Panels
 nnoremap <TAB> <C-w>w
 " Use prettier to format Javascript code with gp
-nnoremap gp :silent %!prettier --stdin --trailing-comma all --single-quote<CR>
+" nnoremap gp :silent %!prettier --stdin --trailing-comma all --single-quote<CR>
+nnoremap gp :silent %!./node_modules/.bin/prettier --stdin --config ./prettier.config.js<CR>
 "Next and Previous Error
 nnoremap <Leader>j :ALENext<CR>
 nnoremap <Leader>k :ALEPrevious<CR>
+
+" difftool sugar
+map <leader>nn :qa<CR>
 
 " Custom commands
 command! Dark execute "colorscheme base16_eighties"
@@ -219,6 +238,11 @@ nnoremap <Leader>p :cp<CR>
 
 "Copy to Clipboard
 nnoremap <Leader>c "+y
+
+" Run npm run build
+" nnoremap <leader>rr :silent !npm run build<CR> | execute ':redraw!'
+" nnoremap <leader>rr :silent !npm run build<CR>
+nnoremap <leader>rrr :redraw!<CR>
 
 " Damian Conway stuff
 " ====[ Show when lines extend past column 80 ]====
@@ -245,3 +269,29 @@ augroup MarkMargin
 augroup END
 
 set completefunc=emoji#complete
+
+"increase curent split size by 50%
+nnoremap <silent><Leader>= :exe "resize " . (winheight(0) * 3/2)<CR>
+"decrease currnte split size by 33%
+nnoremap <silent><Leader>- :exe "resize " . (winheight(0) * 2/3)<CR>
+"increase curent split size by 50%
+nnoremap <silent><Leader>] :exe "vertical resize " . (winwidth(0) * 3/2)<CR>
+"decrease currnte split size by 33%
+nnoremap <silent><Leader>[ :exe "vertical resize " . (winwidth(0) * 2/3)<CR>
+
+" Toggles between line numbering styles (none, absolue, relative, relative 0)
+nn <silent> <leader>N :call ToggleNumber()<CR>
+fun! ToggleNumber() "{{{
+	if exists('+relativenumber')
+		:exec &nu==&rnu? "setl nu!" : "setl rnu!"
+	else
+		setl nu!
+	endif
+endf "}}}
+
+" search for selection
+vnoremap // y/<C-R>"<CR>
+
+" Trigger configuration (Optional)
+"let g:UltiSnipsExpandTrigger="<C-l>"
+"
