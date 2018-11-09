@@ -20,6 +20,9 @@ Plug 'airblade/vim-gitgutter'
 " use
 Plug 'Chiel92/vim-autoformat'
 
+" YOU NEED A FILE .ctrlpignore at the root of each project indicating which
+" directories to ignore... I've done so because in some projects I do like 
+" being able to ctrlp through node_modules...
 Plug 'kien/ctrlp.vim'
 let g:ctrlp_user_command = 'find %s -type f | grep -v "`cat .ctrlpignore`"'
 
