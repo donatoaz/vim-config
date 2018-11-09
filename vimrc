@@ -1,46 +1,137 @@
 call plug#begin()
-Plug 'ecomba/vim-ruby-refactoring'
+" Plug 'ecomba/vim-ruby-refactoring'
 Plug 'scrooloose/nerdtree'
-Plug 'chriskempson/base16-vim'
-"Plug 'roman/golden-ratio'
+" Plug 'chriskempson/base16-vim'
+" Plug 'roman/golden-ratio'
 Plug 'w0rp/ale'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+
+" Syntax highlighting and autoindenting
 Plug 'pangloss/vim-javascript'
-"Plug 'jparise/vim-graphql'
+Plug 'jparise/vim-graphql'
 Plug 'mxw/vim-jsx'
 Plug 'elzr/vim-json'
+
 Plug 'airblade/vim-gitgutter'
+
+" https://github.com/Chiel92/vim-autoformat
+" use command :Autoformat it gets the file type and knows which formatter to
+" use
 Plug 'Chiel92/vim-autoformat'
+
 Plug 'kien/ctrlp.vim'
-Plug 'mhinz/vim-startify'
+let g:ctrlp_user_command = 'find %s -type f | grep -v "`cat .ctrlpignore`"'
+
+" this is the cow-screen plugin, only needed when opening VIm without
+" specifying a file name or directory
+" Plug 'mhinz/vim-startify'
+
+" This is a Vim plugin that provides Tern-based JavaScript editing support
+" such as jump to definition or rename variable
 "Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
-Plug 'gcmt/taboo.vim'
+
+" couldnt make this work, somehow
+" Plug 'gcmt/taboo.vim'
+
+" So used this instead... Tab functionality with nerdtree
+Plug 'jistr/vim-nerdtree-tabs'
+nmap <leader>, :bprevious<CR>
+nmap <leader>. :bnext<CR>
+nmap <leader>1 :bfirst<CR>
+nmap <leader>2 :bfirst<CR>:bn<CR>
+nmap <leader>3 :bfirst<CR>:2bn<CR>
+nmap <leader>4 :bfirst<CR>:3bn<CR>
+nmap <leader>5 :bfirst<CR>:4bn<CR>
+nmap <leader>6 :bfirst<CR>:5bn<CR>
+
 Plug 'lifepillar/vim-mucomplete'
+" MuComplete Config
+"inoremap <expr> <c-e> mucomplete#popup_exit("\<c-e>")
+"inoremap <expr> <c-y> mucomplete#popup_exit("\<c-y>")
+"inoremap <expr>  <cr> mucomplete#popup_exit("\<cr>")
+set completeopt=menuone
+set completeopt+=noinsert
+"set completeopt+=longest,
+let g:mucomplete#enable_auto_at_startup = 1
+
+" when 0, filepaths are interpreted relative to pwd (default)
+" when 1, filepaths are interpreted relative to buffer location
+" let g:mucomplete#buffer_relative_paths = 1
+
+let g:mucomplete#force_manual = 1
+" let g:mucomplete#can_complete = {}
+" let g:mucomplete#can_complete.default = {
+"     \  'omni': {
+"     \     t -> g:mucomplete_with_key
+"     \   },
+"     \  'keyn': {
+"     \     t -> g:mucomplete_with_key
+"     \  }
+"     \ }
+let g:mucomplete#chains = { 'default': ['omni', 'keyn'] }
+"	:MUcompleteNotify 3
+
+Plug 'mattn/jscomplete-vim'
+autocmd FileType javascript
+  \ :setl omnifunc=jscomplete#CompleteJS
+Plug 'ahayman/vim-nodejs-complete'
+
 Plug 'tmhedberg/matchit'
+
+" automagically creates the closing parens
+" <Leader>a( will wrap selection in (). Also works with other characters 
 Plug 'Townk/vim-autoclose'
+
+" autoclose (x)html tags
 Plug 'alvan/vim-closetag'
+let g:closetag_filetypes = 'html,xhtml,phtml,javascript.jsx'
+let g:closetag_xhtml_filetypes = 'xhtml,jsx,javascript.jsx'
+
+" Syntax hl for html
 Plug 'othree/html5.vim'
+
+" Syntax hl for vue components
 "Plug 'posva/vim-vue'
+
+" <Leader>cc comments out selection
+" when in normal mode, <Leader>c<space> toggles current comment state of
+" line(s)
 Plug 'vim-scripts/The-Nerd-Commenter'
-Plug 'dhruvasagar/vim-table-mode'
+
+" Allows for ascii table creation in vim
+"Plug 'dhruvasagar/vim-table-mode'
+
 Plug 'tpope/vim-rails'
 Plug 'vim-ruby/vim-ruby'
+
+" Elixir plugins
 "Plug 'elixir-editors/vim-elixir'
 "Plug 'slashmili/alchemist.vim'
+
+" Git plugin
 Plug 'tpope/vim-fugitive'
+Plug 'shumphrey/fugitive-gitlab.vim'
+noremap :gst :Gstatus
+noremap :gd :Gvdiff
+noremap :gb :Gblame
+noremap :gg :Gblame
+
 "Plug 'qpkorr/vim-bufkill'
-Plug 'kchmck/vim-coffee-script'
+" Plug 'kchmck/vim-coffee-script'
 " ES2015 code snippets (Optional)
-"Plug 'epilande/vim-es2015-snippets'
+" Plug 'epilande/vim-es2015-snippets'
 " React code snippets
-"Plug 'epilande/vim-react-snippets'
-"Plug 'SirVer/ultisnips'
-Plug 'reinh/jquery-autocomplete'
+" Plug 'epilande/vim-react-snippets'
+" Plug 'SirVer/ultisnips'
+" Plug 'reinh/jquery-autocomplete'
 Plug 'junegunn/vim-emoji'
-Plug 'vim-scripts/loremipsum'
+" Plug 'vim-scripts/loremipsum'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'tpope/vim-surround'
+"Plug 'smintz/vim-sqlutil'
+"Plug 'vim-scripts/Align'
+Plug 'dracula/vim',{'as':'dracula'}
 call plug#end()
 
 " Basic Configuration
@@ -122,25 +213,6 @@ let g:rubycomplete_classes_in_global = 1
 let g:rubycomplete_rails = 1
 let g:rubycomplete_load_gemfile = 1
 
-" MuComplete Config
-"inoremap <expr> <c-e> mucomplete#popup_exit("\<c-e>")
-"inoremap <expr> <c-y> mucomplete#popup_exit("\<c-y>")
-"inoremap <expr>  <cr> mucomplete#popup_exit("\<cr>")
-"set completeopt=longest,menuone
-"set completeopt+=noinsert
-"let g:mucomplete#enable_auto_at_startup = 1
-"let g:mucomplete#buffer_relative_paths = 1
-" let g:mucomplete#can_complete = {}
-" let g:mucomplete#can_complete.default = {
-"     \  'omni': {
-"     \     t -> g:mucomplete_with_key
-"     \   }
-"     \ }
-"let g:mucomplete#chains = {
-"    \ 'default' : ['omni', 'keyn', 'dict', 'uspl', 'ulti'],
-"    \ 'vim'     : ['cmd', 'keyn']
-" \ }
-
 let g:ale_linters = {'ruby': 'rubocop'}
 let g:ale_linters = {'elixir': 'credo' }
 
@@ -171,7 +243,8 @@ let g:ale_fix_on_save = 1
 let g:ale_javascript_prettier_options = '--config ./prettier.config.js'
      
 " Theme options
-"set termguicolors
+" set termguicolors
+let base16colorspace=256
 "colorscheme base16-mocha
 let g:one_allow_italics = 1
 hi def link jsObjectKey Label
@@ -183,6 +256,9 @@ let g:airline_powerline_fonts = 1
 let g:airline_theme='base16_mocha'
 let g:airline#extensions#ale#enabled = 1
 let g:airline#extensions#branch#enabled=1
+
+" Trigger configuration (Optional)
+let g:UltiSnipsExpandTrigger="<C-l>"
 
 " Salva as abas na sessão
 set sessionoptions+=tabpages,globals
@@ -224,6 +300,9 @@ nnoremap <Leader>k :ALEPrevious<CR>
 
 " difftool sugar
 map <leader>nn :qa<CR>
+
+" xmllint formatting
+" nnoremap xml :%!xmllint --format -<CR>
 
 " Custom commands
 command! Dark execute "colorscheme base16_eighties"
@@ -294,4 +373,13 @@ vnoremap // y/<C-R>"<CR>
 
 " Trigger configuration (Optional)
 "let g:UltiSnipsExpandTrigger="<C-l>"
-"
+
+set tags=tags
+
+" move lines http://vim.wikia.com/wiki/Moving_lines_up_or_down
+nnoremap <C-j> :m .+1<CR>==
+nnoremap <C-k> :m .-2<CR>==
+inoremap <C-j> <Esc>:m .+1<CR>==gi
+inoremap <C-k> <Esc>:m .-2<CR>==gi
+vnoremap <C-j> :m '>+1<CR>gv=gv
+vnoremap <C-k> :m '<-2<CR>gv=gv
